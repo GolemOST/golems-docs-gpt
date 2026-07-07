@@ -10,3 +10,7 @@ __pycache__/
 build/
 dist/
 *.spec
+
+# Local tunnel/server logs
+tunnel.log
+
