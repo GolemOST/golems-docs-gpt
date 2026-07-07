@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: golems-docs-gpt
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app
+    envVars:
+      - key: DOCSGPT_MODE
+        value: online
+      - key: PYTHON_VERSION
+        value: 3.12.8

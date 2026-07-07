@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs GPT</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📑</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <h1>Docs GPT</h1>
+    <p class="tagline">Answers only from your documents — the document stays the authority.</p>
+  </div>
+  <div class="topbar-right">
+    <div class="notice" title="Question answering sends document text to the Claude API.">
+      ⚠ Documents are sent to the Claude API to answer questions.<br>
+      <strong>Never upload confidential or personal documents.</strong>
+    </div>
+    <button id="settings-btn" class="btn secondary" title="API key settings">⚙ Settings</button>
+    <span id="key-status" class="key-pill" hidden></span>
+  </div>
+</header>
+
+<div id="online-banner" class="online-banner" hidden>
+  🌐 <strong>Demo workspace</strong> — your documents live in a temporary space that is
+  auto-deleted after 24 hours. Questions send your documents' text to Anthropic using
+  <strong>your own API key</strong>. This is a demo tool, not a document vault —
+  never upload confidential or personal documents.
+</div>
+
+<main class="layout">
+
+  <aside class="panel library-panel">
+    <h2>Library</h2>
+    <div class="upload-box">
+      <input type="file" id="file-input" accept=".pdf,.docx,.txt,.md" hidden>
+      <button id="pick-file" class="btn secondary">＋ Add document</button>
+      <form id="upload-form" class="upload-form" hidden>
+        <div class="field"><label for="up-title">Title</label><input id="up-title" type="text"></div>
+        <div class="field"><label for="up-rev">Rev</label><input id="up-rev" type="text" placeholder="e.g. 3"></div>
+        <div class="field"><label for="up-status">Status</label>
+          <select id="up-status"><option value="current">Current</option><option value="superseded">Superseded</option></select>
+        </div>
+        <div class="row">
+          <button type="submit" class="btn">Upload</button>
+          <button type="button" id="up-cancel" class="btn ghost">Cancel</button>
+        </div>
+      </form>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="include-superseded">
+      Include superseded docs in answers
+    </label>
+    <div id="library-list" class="library-list"></div>
+  </aside>
+
+  <section class="panel ask-panel">
+    <div class="ask-box">
+      <textarea id="question" rows="2"
+        placeholder="Ask a question about your documents… (Enter to ask, Shift+Enter for a new line)"></textarea>
+      <button id="ask-btn" class="btn primary">Ask</button>
+    </div>
+    <div id="status-line" class="status-line" hidden></div>
+    <article id="answer-card" class="answer-card" hidden>
+      <div id="refusal-banner" class="refusal-banner" hidden>
+        ⚠ No supporting passages found — treat this as <strong>unverified</strong>. Your documents may not cover it.
+      </div>
+      <div id="answer-body" class="answer-body"></div>
+      <footer class="answer-footer">
+        <div id="assembled-line" class="assembled-line"></div>
+        <div class="authority-note">The answer is a pointer — the controlling document is the authority. Open the citation before acting.</div>
+      </footer>
+    </article>
+  </section>
+
+  <aside class="panel evidence-panel">
+    <h2>Evidence</h2>
+    <p class="evidence-hint" id="evidence-hint">Citations appear here after you ask a question — every quote links to the exact passage in the source document.</p>
+    <div id="evidence-list" class="evidence-list"></div>
+  </aside>
+
+</main>
+
+<div id="viewer-overlay" class="viewer-overlay" hidden>
+  <div class="viewer">
+    <header class="viewer-header">
+      <div>
+        <h3 id="viewer-title"></h3>
+        <span id="viewer-meta" class="viewer-meta"></span>
+      </div>
+      <button id="viewer-close" class="btn ghost">✕ Close</button>
+    </header>
+    <pre id="viewer-text" class="viewer-text"></pre>
+  </div>
+</div>
+
+<div id="settings-overlay" class="viewer-overlay" hidden>
+  <div class="viewer settings">
+    <header class="viewer-header">
+      <div><h3>Settings — Anthropic API key</h3></div>
+      <button id="settings-close" class="btn ghost">✕ Close</button>
+    </header>
+    <div class="settings-body">
+      <p id="settings-note" class="settings-note"></p>
+      <div class="field">
+        <label for="api-key-input">API key (starts with sk-ant-)</label>
+        <input id="api-key-input" type="password" placeholder="sk-ant-..." autocomplete="off">
+      </div>
+      <div class="row">
+        <button id="key-save-browser" class="btn primary">Save in this browser</button>
+        <button id="key-save-device" class="btn" hidden>Save on this PC</button>
+        <button id="key-clear" class="btn ghost">Clear key</button>
+      </div>
+      <p class="settings-fineprint">
+        Your question and your documents' text are sent to Anthropic using
+        <strong>your</strong> key — you pay for your own usage.
+        Get a key at console.anthropic.com.
+        <span id="settings-online-line" hidden>The online server never stores your key —
+        it travels only with each question, over HTTPS.</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

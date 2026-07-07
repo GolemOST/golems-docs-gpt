@@ -1,0 +1,12 @@
+# Runtime data — user libraries and workspaces never belong in git
+data/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Packaging (Phase 3)
+build/
+dist/
+*.spec

@@ -1,0 +1,50 @@
+================================================================
+            G O L E M ' S   D O C S   G P T
+       Answers only from YOUR documents — with proof
+================================================================
+
+WHAT THIS DOES
+--------------
+Upload your procedures, manuals, or technical documents.
+Ask a question in plain English.  You get:
+
+  (1)  A short answer built ONLY from your documents
+  (2)  An EVIDENCE panel — verbatim quotes, each one a click
+       away from the exact highlighted passage in the source
+  (3)  A straight "Not found in your documents." when your
+       documents don't contain the answer.  No making things up.
+
+Works with .pdf, .docx, .txt and .md files (15 MB each).
+
+
+HOW TO USE IT  (3 STEPS)
+------------------------
+ STEP 1 — Double-click "Start Docs GPT.bat"
+          A browser tab opens at http://127.0.0.1:8756
+          (First time: needs Python 3.11+ installed — python.org)
+
+ STEP 2 — Click the gear (⚙ Settings) and paste your Anthropic
+          API key, then "Save on this PC".
+          Get a key at:  console.anthropic.com
+          You pay only for your own questions — typically a few
+          cents each.
+
+ STEP 3 — Ask a question, or try the built-in demo documents:
+          "What are the acceptable gas test limits for confined
+           space entry?"
+          Then CLICK the citation — the source opens with the
+          exact passage highlighted.  That's the whole point:
+          never trust, always verify.
+
+
+GOOD TO KNOW
+------------
+ * Your documents stay on YOUR computer.  When you ask a
+   question, the document text + your question go to Anthropic
+   (the Claude AI company) using YOUR key — nowhere else.
+ * Never upload documents you are not allowed to share with a
+   cloud AI service (confidential company files, personal data).
+ * Scanned/photographed PDFs are not supported yet (no OCR).
+ * The answer is a pointer — the document is the authority.
+   Open the citation before acting on a number or a limit.
+================================================================
