@@ -68,7 +68,9 @@ async function loadConfig() {
 function keySource() {
   if (localStorage.getItem(KEY_STORAGE)) return "browser";
   if (state.config.has_saved_key) return "this PC";
-  if (state.config.has_env_key && state.config.mode === "local") return "server env";
+  if (state.config.has_env_key) {
+    return state.config.mode === "online" ? "site-provided" : "server env";
+  }
   return null;
 }
 
@@ -90,7 +92,9 @@ function wireSettings() {
       ? (state.config.has_env_key || state.config.has_saved_key
         ? "A key is already configured on this PC — you only need one here to override it."
         : "Paste your Anthropic API key to enable question answering.")
-      : "Paste your Anthropic API key. It stays in this browser and is sent only with your questions.";
+      : (state.config.has_env_key
+        ? "This site provides a key — asking already works. Paste your own to bill your account instead."
+        : "Paste your Anthropic API key. It stays in this browser and is sent only with your questions.");
     overlay.hidden = false;
     $("api-key-input").focus();
   });
@@ -259,7 +263,8 @@ function setStatus(message, isError = false) {
 async function ask() {
   const question = $("question").value.trim();
   if (!question) { toast("Type a question first."); return; }
-  if (state.config.mode === "online" && !localStorage.getItem(KEY_STORAGE)) {
+  if (state.config.mode === "online" && !localStorage.getItem(KEY_STORAGE)
+      && !state.config.has_env_key) {
     toast("Paste your Anthropic API key first — it's your key, your usage.");
     $("settings-btn").click();
     return;

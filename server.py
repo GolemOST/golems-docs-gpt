@@ -31,6 +31,10 @@ PORT = int(os.getenv("PORT", "8756"))
 PURGE_IDLE_HOURS = 24.0
 PURGE_EVERY_SECONDS = 3600
 RATE_LIMITS = {"ask": (10, 60.0), "upload": (20, 60.0)}
+# Server-wide ceiling: workspaces are free to mint, so per-workspace limits alone
+# can't protect a site-provided key's wallet.
+GLOBAL_RATE_LIMITS = {"ask": (30, 60.0), "upload": (40, 60.0)}
+GLOBAL_BUCKET = "*all*"
 
 app = Flask(__name__, static_folder=str(engine.APP_DIR / "static"), static_url_path="")
 
@@ -48,18 +52,25 @@ def _workspace() -> str:
     return engine.validate_workspace(header)
 
 
-def _throttled(action: str, workspace: str) -> bool:
-    """Fixed-window rate limit per workspace; True when over the limit."""
-    limit, window = RATE_LIMITS[action]
+def _over_limit(action: str, bucket: str, limit: int, window: float) -> bool:
+    """Fixed-window check for one bucket; True when over the limit."""
     now = time.monotonic()
     with _rate_lock:
-        hits = _rate_hits[(action, workspace)]
+        hits = _rate_hits[(action, bucket)]
         while hits and now - hits[0] > window:
             hits.popleft()
         if len(hits) >= limit:
             return True
         hits.append(now)
     return False
+
+
+def _throttled(action: str, workspace: str) -> bool:
+    """Per-workspace limit plus the server-wide ceiling."""
+    limit, window = RATE_LIMITS[action]
+    g_limit, g_window = GLOBAL_RATE_LIMITS[action]
+    return (_over_limit(action, workspace, limit, window)
+            or _over_limit(action, GLOBAL_BUCKET, g_limit, g_window))
 
 
 def _purge_loop() -> None:
