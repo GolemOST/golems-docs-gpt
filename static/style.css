@@ -324,3 +324,35 @@ sup.cite:hover { text-decoration: underline; }
 .settings-body { padding: 16px 20px 20px; }
 .settings-note { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
 .settings-fineprint { margin: 14px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+/* ---------- Mobile (phones) ---------- */
+@media (max-width: 1050px) {
+  .topbar-right { width: 100%; flex-wrap: wrap; }
+}
+
+@media (max-width: 720px) {
+  .topbar { padding: 10px 14px; gap: 8px; }
+  .brand h1 { font-size: 21px; }
+  .tagline { font-size: 12px; }
+  .notice { max-width: none; width: 100%; }
+  #settings-btn { flex: 1; width: auto; }
+  .online-banner { padding: 8px 14px; font-size: 12.5px; }
+  .layout { padding: 10px 12px; gap: 10px; }
+  /* Phone order: ask first, evidence next to the answer, library last */
+  .ask-panel { order: -1; }
+  .evidence-panel { order: 0; }
+  .library-panel { order: 1; }
+  .ask-box { flex-direction: column; }
+  .ask-box textarea { font-size: 16px; } /* 16px stops iOS zoom-on-focus */
+  .ask-box .btn.primary { width: 100%; padding: 12px; }
+  .answer-card { padding: 14px; }
+  .btn { padding: 10px 14px; } /* thumb-sized targets */
+  .evidence-open { display: inline-block; padding: 6px 0; }
+  sup.cite { padding: 2px 4px; }
+  .viewer-overlay { padding: 0; align-items: stretch; }
+  .viewer, .viewer.settings { width: 100%; max-width: none; height: 100vh; max-height: 100vh; border-radius: 0; }
+  .viewer-text { padding: 12px 14px; font-size: 12.5px; }
+  .settings-body { padding: 12px 14px 16px; }
+  .row { flex-wrap: wrap; }
+  .row .btn { flex: 1 1 auto; }
+}
